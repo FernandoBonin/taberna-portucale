@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
+import Footer from '@/components/Footer';
+import AzulejoBand from '@/components/AzulejoBand';
 import DishCard from '@/components/DishCard';
 import { Category, Dish, RESTAURANT_INFO } from '@/data/menu';
 
@@ -46,163 +48,175 @@ export default function CategoryMenuClient({
         backHref="/categorias"
       />
 
-      <main className="flex-1 flex flex-col relative w-full pb-8">
-        {/* Decorative Heritage Ribbon & Breadcrumbs */}
-        <div className="px-margin-mobile pt-space-md pb-space-sm flex flex-col gap-space-xs">
-          <div className="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
-            <Link href="/" className="hover:underline text-on-surface-variant">
-              Início
-            </Link>
-            <ChevronRight className="w-3 h-3 text-outline-variant" />
-            <Link href="/categorias" className="hover:underline text-on-surface-variant">
-              Categorias
-            </Link>
-            <ChevronRight className="w-3 h-3 text-outline-variant" />
-            <span className="text-secondary font-bold">{category.name}</span>
+      <main className="flex-1 flex flex-col relative w-full pb-12">
+        <AzulejoBand />
+
+        <div className="max-w-7xl mx-auto w-full px-margin-mobile md:px-8 py-4 md:py-8">
+          {/* Decorative Breadcrumbs & Navigation */}
+          <div className="pt-2 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant/15 mb-6">
+            <div className="flex items-center gap-space-xs text-on-surface-variant font-label-md text-xs sm:text-sm">
+              <Link href="/" className="hover:underline text-on-surface-variant">
+                Início
+              </Link>
+              <ChevronRight className="w-3.5 h-3.5 text-outline-variant" />
+              <Link href="/categorias" className="hover:underline text-on-surface-variant">
+                Categorias
+              </Link>
+              <ChevronRight className="w-3.5 h-3.5 text-outline-variant" />
+              <span className="text-secondary font-bold">{category.name}</span>
+            </div>
+
+            <button
+              onClick={() => router.push('/categorias')}
+              className="inline-flex items-center gap-1.5 self-start sm:self-auto text-primary-container font-label-md text-xs sm:text-sm font-bold py-1 px-2.5 rounded-lg hover:bg-surface-container transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Voltar para Categorias</span>
+            </button>
           </div>
 
-          <button
-            onClick={() => router.push('/categorias')}
-            className="inline-flex items-center gap-space-xs self-start text-primary-container font-label-md text-label-md font-bold py-1 transition-opacity hover:opacity-80"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Voltar para Categorias</span>
-          </button>
-        </div>
+          {/* Category Headline Section */}
+          <section className="pb-6">
+            <div className="bg-surface-container rounded-2xl p-6 md:p-8 shadow-sm relative overflow-hidden border border-tertiary-fixed/30">
+              {/* Subtle Azulejo Crest Watermark Accent */}
+              <div className="absolute -right-4 -bottom-6 opacity-10 pointer-events-none text-primary">
+                <Sailboat className="w-48 h-48 md:w-64 md:h-64" />
+              </div>
 
-        {/* Category Headline Section */}
-        <section className="px-margin-mobile pt-space-xs pb-space-md">
-          <div className="bg-surface-container rounded-xl p-space-md shadow-sm relative overflow-hidden border border-tertiary-fixed/30">
-            {/* Subtle Azulejo Crest Watermark Accent */}
-            <div className="absolute -right-4 -bottom-6 opacity-10 pointer-events-none text-primary">
-              <Sailboat className="w-32 h-32" />
-            </div>
+              <div className="max-w-3xl relative z-10">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold uppercase tracking-wider mb-3">
+                  <Award className="w-3.5 h-3.5" />
+                  <span>{category.badge || 'Especialidade da Casa'}</span>
+                </div>
 
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-md font-label-md uppercase tracking-wider mb-2">
-              <Award className="w-3.5 h-3.5" />
-              <span>{category.badge || 'Especialidade da Casa'}</span>
-            </div>
+                <h1 className="font-headline-lg-mobile md:font-headline-lg text-2xl sm:text-3xl lg:text-4xl text-on-surface mb-2 font-bold">
+                  {category.slug === 'bacalhau' ? 'Pratos de Bacalhau' : category.name}
+                </h1>
 
-            <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2 font-bold">
-              {category.slug === 'bacalhau' ? 'Pratos de Bacalhau' : category.name}
-            </h2>
+                <p className="font-body-md md:font-body-lg text-sm sm:text-base text-on-surface-variant mb-4 leading-relaxed">
+                  {category.description}
+                </p>
 
-            <p className="font-body-md text-body-md text-on-surface-variant mb-space-sm leading-relaxed">
-              {category.description}
-            </p>
-
-            <div className="flex items-center gap-2 p-2 bg-surface-container-high rounded-lg text-tertiary-container font-label-md text-label-md">
-              <Clock className="w-4 h-4 text-secondary shrink-0" />
-              <span>Preparo artesanal cuidadoso: {RESTAURANT_INFO.estimatedTime}</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Interactive Filter Chips (Featured in Bacalhau screen) */}
-        {isBacalhau && (
-          <section className="px-margin-mobile pb-space-md">
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-              <button
-                type="button"
-                onClick={() => setSelectedFilter('all')}
-                className={`px-4 py-1.5 rounded-full font-label-md text-label-md font-bold transition-all whitespace-nowrap ${
-                  selectedFilter === 'all'
-                    ? 'bg-primary-container text-surface shadow-sm'
-                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                }`}
-              >
-                Todos
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedFilter('forno')}
-                className={`px-4 py-1.5 rounded-full font-label-md text-label-md font-bold transition-all whitespace-nowrap ${
-                  selectedFilter === 'forno'
-                    ? 'bg-primary-container text-surface shadow-sm'
-                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                }`}
-              >
-                Ao Forno
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedFilter('desfiado')}
-                className={`px-4 py-1.5 rounded-full font-label-md text-label-md font-bold transition-all whitespace-nowrap ${
-                  selectedFilter === 'desfiado'
-                    ? 'bg-primary-container text-surface shadow-sm'
-                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                }`}
-              >
-                Desfiado
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedFilter('natas')}
-                className={`px-4 py-1.5 rounded-full font-label-md text-label-md font-bold transition-all whitespace-nowrap ${
-                  selectedFilter === 'natas'
-                    ? 'bg-primary-container text-surface shadow-sm'
-                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                }`}
-              >
-                Com Natas
-              </button>
+                <div className="inline-flex items-center gap-2 p-2.5 px-3.5 bg-surface-container-high rounded-xl text-tertiary-container font-label-md text-xs sm:text-sm border border-outline-variant/15">
+                  <Clock className="w-4 h-4 text-secondary shrink-0" />
+                  <span>Preparo artesanal cuidadoso: {RESTAURANT_INFO.estimatedTime}</span>
+                </div>
+              </div>
             </div>
           </section>
-        )}
 
-        {/* Menu Item List */}
-        <section className="px-margin-mobile flex flex-col gap-space-md pb-space-lg">
-          {filteredDishes.length > 0 ? (
-            filteredDishes.map((dish) => <DishCard key={dish.id} dish={dish} />)
-          ) : (
-            <div className="p-8 text-center bg-surface-container rounded-xl text-on-surface-variant">
-              Nenhum prato encontrado para este filtro.
-            </div>
+          {/* Interactive Filter Chips */}
+          {isBacalhau && (
+            <section className="pb-6">
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('all')}
+                  className={`px-5 py-2 rounded-full font-label-md text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+                    selectedFilter === 'all'
+                      ? 'bg-primary-container text-surface shadow-md scale-105'
+                      : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                  }`}
+                >
+                  Todos
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('forno')}
+                  className={`px-5 py-2 rounded-full font-label-md text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+                    selectedFilter === 'forno'
+                      ? 'bg-primary-container text-surface shadow-md scale-105'
+                      : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                  }`}
+                >
+                  Ao Forno
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('desfiado')}
+                  className={`px-5 py-2 rounded-full font-label-md text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+                    selectedFilter === 'desfiado'
+                      ? 'bg-primary-container text-surface shadow-md scale-105'
+                      : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                  }`}
+                >
+                  Desfiado
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('natas')}
+                  className={`px-5 py-2 rounded-full font-label-md text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+                    selectedFilter === 'natas'
+                      ? 'bg-primary-container text-surface shadow-md scale-105'
+                      : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                  }`}
+                >
+                  Com Natas
+                </button>
+              </div>
+            </section>
           )}
-        </section>
 
-        {/* Tavern Note / Policy Banner */}
-        <div className="px-margin-mobile mb-space-lg">
-          <div className="p-space-md rounded-xl bg-surface-container-high flex items-center gap-3 border border-outline-variant/20">
-            <Info className="w-6 h-6 text-secondary shrink-0" />
-            <div className="flex flex-col">
-              <span className="font-label-md text-label-md text-on-surface font-bold">
-                Aviso da Cozinha
-              </span>
-              <span className="font-body-md text-body-md text-on-surface-variant">
-                Não retiramos e nem trocamos itens do prato. Agradecemos a compreensão.
-              </span>
+          {/* Menu Item Grid: Mobile 1 Col / Tablet 2 Cols / Desktop 3 Cols */}
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pb-8" id="menuItemsList">
+            {filteredDishes.length > 0 ? (
+              filteredDishes.map((dish) => <DishCard key={dish.id} dish={dish} />)
+            ) : (
+              <div className="col-span-full p-12 text-center bg-surface-container rounded-2xl text-on-surface-variant border border-outline-variant/20">
+                Nenhum prato encontrado para este filtro.
+              </div>
+            )}
+          </section>
+
+          {/* Kitchen Notice Banner */}
+          <div className="mb-8">
+            <div className="p-4 md:p-5 rounded-2xl bg-surface-container-high flex items-center gap-3.5 border border-outline-variant/20 max-w-3xl">
+              <Info className="w-6 h-6 text-secondary shrink-0" />
+              <div className="flex flex-col">
+                <span className="font-label-md text-xs md:text-sm text-on-surface font-bold">
+                  Aviso da Cozinha
+                </span>
+                <span className="font-body-md text-xs md:text-sm text-on-surface-variant">
+                  Não retiramos e nem trocamos itens do prato para manter a fidelidade e equilíbrio das receitas tradicionais.
+                </span>
+              </div>
             </div>
           </div>
+
+          {/* Bottom Reservation Card / Call to Action */}
+          <section className="pb-8">
+            <div className="bg-primary-container text-surface rounded-2xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-surface/5 pointer-events-none"></div>
+              
+              <div className="flex items-center gap-4 text-center md:text-left">
+                <div className="w-14 h-14 rounded-2xl bg-surface-container/20 flex items-center justify-center text-tertiary-fixed shrink-0">
+                  <Utensils className="w-7 h-7" />
+                </div>
+                <div>
+                  <h4 className="font-headline-sm text-xl md:text-2xl text-surface font-semibold mb-1">
+                    Deseja reservar sua mesa para hoje?
+                  </h4>
+                  <p className="font-body-md text-sm text-primary-fixed-dim/90 max-w-lg leading-snug">
+                    Venha desfrutar da autêntica culinária lusa em ambiente aconchegante no coração do Tatuapé.
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href={RESTAURANT_INFO.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-3.5 px-6 bg-tertiary-fixed text-on-tertiary-fixed font-title-md text-sm md:text-base rounded-xl flex items-center justify-center gap-2 shadow-md active:scale-95 hover:bg-tertiary-fixed-dim transition-all shrink-0 font-bold"
+              >
+                <MessageCircle className="w-5 h-5 text-on-tertiary-fixed" />
+                <span>Reservar pelo WhatsApp</span>
+              </a>
+            </div>
+          </section>
         </div>
-
-        {/* Bottom Reservation Card / Call to Action */}
-        <section className="px-margin-mobile pb-space-lg">
-          <div className="bg-primary-container text-surface rounded-xl p-space-md flex flex-col items-center text-center shadow-lg relative overflow-hidden">
-            {/* Decorative Backdrop Flourish */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-surface/5 pointer-events-none"></div>
-            <div className="w-12 h-12 rounded-full bg-surface-container/20 flex items-center justify-center text-tertiary-fixed mb-space-xs">
-              <Utensils className="w-6 h-6" />
-            </div>
-            <h4 className="font-headline-sm text-headline-sm text-surface mb-1 font-semibold">
-              Deseja reservar sua mesa para hoje?
-            </h4>
-            <p className="font-body-md text-body-md text-primary-fixed-dim/90 mb-space-md max-w-xs leading-snug">
-              Venha desfrutar da culinária lusa em ambiente aconchegante no coração do Tatuapé.
-            </p>
-            <a
-              href={RESTAURANT_INFO.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-3.5 px-4 bg-tertiary-fixed text-on-tertiary-fixed font-title-md text-title-md rounded-lg flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform hover:bg-tertiary-fixed-dim"
-            >
-              <MessageCircle className="w-5 h-5 text-on-tertiary-fixed" />
-              <span>Reservar pelo WhatsApp</span>
-            </a>
-          </div>
-        </section>
       </main>
 
+      <Footer />
       <BottomNav />
     </div>
   );

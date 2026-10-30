@@ -37,71 +37,70 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     }
   };
 
+  // 1. Featured Category (e.g. Bacalhau)
   if (category.featured) {
     return (
       <Link
         href={`/categorias/${category.slug}`}
-        className="group relative block p-space-md rounded-xl bg-surface-container shadow-md transition-all duration-200 active:scale-[0.99] hover:shadow-lg border border-tertiary-fixed/30"
+        className="group relative flex flex-col justify-between h-full p-space-md md:p-6 rounded-xl md:rounded-2xl bg-surface-container shadow-md transition-all duration-300 active:scale-[0.99] hover:shadow-xl hover:-translate-y-1 border border-tertiary-fixed/40"
       >
-        <div className="absolute -top-2.5 right-4 px-3 py-0.5 rounded-full bg-secondary text-on-secondary shadow-sm flex items-center gap-1">
+        <div className="absolute -top-2.5 right-4 px-3 py-0.5 rounded-full bg-secondary text-on-secondary shadow-sm flex items-center gap-1 z-10">
           <Star className="w-3 h-3 fill-current" />
           <span className="font-label-md text-label-md font-bold uppercase tracking-wider">
             {category.badge || 'Mais Pedido'}
           </span>
         </div>
-        <div className="flex items-start gap-space-md mt-1">
+
+        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-start gap-space-md mt-1">
           {category.image && (
-            <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm bg-surface-dim relative">
+            <div className="w-20 h-20 md:w-full md:h-40 lg:w-28 lg:h-28 rounded-lg md:rounded-xl overflow-hidden shrink-0 shadow-sm bg-surface-dim relative">
               <Image
                 src={category.image}
                 alt={category.name}
-                width={80}
-                height={80}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-primary/10"></div>
             </div>
           )}
           <div className="flex flex-col flex-1 min-w-0">
-            <div className="flex items-center gap-space-xs">
-              <h2 className="font-headline-sm text-headline-sm text-primary tracking-tight font-bold group-hover:text-secondary transition-colors">
-                {category.name}
-              </h2>
-            </div>
-            <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2 mt-1">
+            <h2 className="font-headline-sm text-headline-sm text-primary tracking-tight font-bold group-hover:text-secondary transition-colors">
+              {category.name}
+            </h2>
+            <p className="font-body-md text-body-md text-on-surface-variant line-clamp-3 mt-1.5 leading-relaxed">
               {category.description}
             </p>
-            <div className="flex items-center justify-between mt-space-xs">
-              <span className="font-label-md text-label-md text-on-primary-fixed-variant bg-primary-fixed px-2 py-0.5 rounded-full font-semibold">
-                {category.countLabel}
-              </span>
-              <div className="flex items-center gap-1 text-primary-container font-label-lg text-label-lg font-bold">
-                <span>Ver pratos</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </div>
-            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mt-space-sm pt-space-xs border-t border-outline-variant/15">
+          <span className="font-label-md text-label-md text-on-primary-fixed-variant bg-primary-fixed px-2.5 py-0.5 rounded-full font-semibold">
+            {category.countLabel}
+          </span>
+          <div className="flex items-center gap-1 text-primary-container font-label-lg text-label-lg font-bold">
+            <span>Ver pratos</span>
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </div>
         </div>
       </Link>
     );
   }
 
-  // Card with thumbnail image (like Sobremesas)
+  // 2. Card with photo (e.g. Sobremesas)
   if (category.image) {
     return (
       <Link
         href={`/categorias/${category.slug}`}
-        className="group block p-space-md rounded-xl bg-surface-container-low transition-all duration-200 active:scale-[0.99] shadow-sm hover:shadow-md"
+        className="group flex flex-col justify-between h-full p-space-md md:p-6 rounded-xl md:rounded-2xl bg-surface-container-low transition-all duration-300 active:scale-[0.99] shadow-sm hover:shadow-xl hover:-translate-y-1 border border-outline-variant/15"
       >
-        <div className="flex items-start gap-space-md">
-          <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm bg-surface-dim relative">
+        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-start gap-space-md">
+          <div className="w-20 h-20 md:w-full md:h-40 lg:w-28 lg:h-28 rounded-lg md:rounded-xl overflow-hidden shrink-0 shadow-sm bg-surface-dim relative">
             <Image
               src={category.image}
               alt={category.name}
-              width={80}
-              height={80}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
               referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-primary/5"></div>
@@ -117,27 +116,33 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                 </span>
               )}
             </div>
-            <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2 mt-1">
+            <p className="font-body-md text-body-md text-on-surface-variant line-clamp-3 mt-1.5 leading-relaxed">
               {category.description}
             </p>
-            <div className="flex items-center gap-1 mt-space-xs text-secondary font-label-lg text-label-lg font-bold">
-              <span>{category.countLabel}</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mt-space-sm pt-space-xs border-t border-outline-variant/15">
+          <span className="font-label-md text-xs text-on-surface-variant font-medium">
+            {category.countLabel}
+          </span>
+          <div className="flex items-center gap-1 text-secondary font-label-lg text-label-lg font-bold">
+            <span>Acessar</span>
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </div>
         </div>
       </Link>
     );
   }
 
-  // Standard category with icon box
+  // 3. Standard category with icon box (Entradas, Peixes, Carnes, Vinhos)
   return (
     <Link
       href={`/categorias/${category.slug}`}
-      className="group block p-space-md rounded-xl bg-surface-container-low transition-all duration-200 active:scale-[0.99] shadow-sm hover:shadow-md"
+      className="group flex flex-col justify-between h-full p-space-md md:p-6 rounded-xl md:rounded-2xl bg-surface-container-low transition-all duration-300 active:scale-[0.99] shadow-sm hover:shadow-xl hover:-translate-y-1 border border-outline-variant/15"
     >
       <div className="flex items-start gap-space-md">
-        <div className="w-14 h-14 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0 shadow-inner">
+        <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-surface-container-high flex items-center justify-center shrink-0 shadow-inner group-hover:bg-primary-fixed/40 transition-colors">
           {getIcon(category.icon)}
         </div>
         <div className="flex flex-col flex-1 min-w-0">
@@ -157,13 +162,19 @@ export default function CategoryCard({ category }: CategoryCardProps) {
               </span>
             )}
           </div>
-          <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2 mt-1">
+          <p className="font-body-md text-body-md text-on-surface-variant line-clamp-3 mt-1.5 leading-relaxed">
             {category.description}
           </p>
-          <div className="flex items-center gap-1 mt-space-xs text-secondary font-label-lg text-label-lg font-bold">
-            <span>{category.countLabel}</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between mt-space-sm pt-space-xs border-t border-outline-variant/15">
+        <span className="font-label-md text-xs text-on-surface-variant font-medium">
+          {category.countLabel}
+        </span>
+        <div className="flex items-center gap-1 text-secondary font-label-lg text-label-lg font-bold">
+          <span>Acessar</span>
+          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </div>
       </div>
     </Link>

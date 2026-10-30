@@ -27,7 +27,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Taberna Portucale - Um pedacinho de Portugal no Tatuapé',
-  description: 'Receitas tradicionais de família, bacalhau nobre da Noruega, vinhos e doces conventuais na Rua Cantagalo, 856 - Tatuapé, São Paulo.',
+  description:
+    'Receitas tradicionais de família, bacalhau nobre da Noruega, vinhos e doces conventuais na Rua Cantagalo, 856 - Tatuapé, São Paulo.',
   openGraph: {
     title: 'Taberna Portucale - Tradição Lusitana no Tatuapé',
     description: 'Bacalhau à Lagareiro, vinhos portugueses e culinária afetiva no Tatuapé.',
@@ -48,9 +49,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={`${playfair.variable} ${jakarta.variable}`}>
-      <body className="min-h-screen bg-[#ece1cc] text-on-surface antialiased flex justify-center items-start selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
-        {/* Main application container: mobile-first framed gracefully on desktop */}
-        <div className="w-full max-w-[480px] min-h-screen bg-surface shadow-2xl relative flex flex-col sm:my-4 sm:rounded-2xl sm:overflow-hidden sm:border sm:border-outline-variant/30">
+      <body className="min-h-screen bg-surface text-on-surface antialiased flex flex-col selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+        <div className="w-full flex-1 flex flex-col">
           {children}
         </div>
       </body>

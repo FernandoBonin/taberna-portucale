@@ -36,7 +36,7 @@ export default function BottomNav() {
   ];
 
   return (
-    <nav className="sticky bottom-0 w-full z-50 pb-safe bg-surface-container-low/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(31,27,15,0.06)] border-t border-outline-variant/20">
+    <nav className="md:hidden sticky bottom-0 w-full z-50 pb-safe bg-surface-container-low/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(31,27,15,0.06)] border-t border-outline-variant/20">
       <div className="flex justify-around items-center h-16 px-space-xs">
         {navItems.map((item) => {
           const Icon = item.icon;

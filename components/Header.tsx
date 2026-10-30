@@ -3,8 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Utensils, ChevronLeft } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Utensils, ChevronLeft, MessageCircle, Clock, BookOpen } from 'lucide-react';
 import { RESTAURANT_INFO } from '@/data/menu';
 
 interface HeaderProps {
@@ -21,6 +21,7 @@ export default function Header({
   backHref,
 }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleBack = () => {
     if (backHref) {
@@ -30,9 +31,19 @@ export default function Header({
     }
   };
 
+  const navLinks = [
+    { label: 'Início', href: '/', isActive: pathname === '/' },
+    { label: 'Categorias', href: '/categorias', isActive: pathname.startsWith('/categoria') },
+    { label: 'Destaques', href: '/destaques', isActive: pathname === '/destaques' },
+    { label: 'Informações', href: '/informacoes', isActive: pathname === '/informacoes' },
+  ];
+
   return (
-    <header className="sticky top-0 w-full z-50 bg-primary-container/95 backdrop-blur-xl shadow-[0_2px_12px_rgba(24,63,50,0.12)] pt-safe">
-      <div className={`px-margin-mobile flex items-center justify-between ${variant === 'home' ? 'h-20' : 'h-16'}`}>
+    <header className="sticky top-0 w-full z-50 bg-primary-container/95 backdrop-blur-xl shadow-[0_2px_12px_rgba(24,63,50,0.14)] border-b border-primary-fixed/20 pt-safe">
+      {/* ============================================================== */}
+      {/* 1. MOBILE HEADER (< 768px): Preserved exact original layout     */}
+      {/* ============================================================== */}
+      <div className={`md:hidden px-margin-mobile flex items-center justify-between ${variant === 'home' ? 'h-20' : 'h-16'}`}>
         {variant === 'home' ? (
           <Link href="/" className="flex flex-col justify-center text-left group">
             <div className="flex items-center gap-space-xs">
@@ -87,6 +98,87 @@ export default function Header({
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* 2. DESKTOP & TABLET HEADER (>= 768px): Horizontal restaurant bar */}
+      {/* ============================================================== */}
+      <div className="hidden md:block max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="h-20 flex items-center justify-between gap-6">
+          {/* Brand zone */}
+          <Link href="/" className="flex items-center gap-3 shrink-0 group">
+            <div className="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed shadow-md group-hover:scale-105 transition-transform">
+              <Utensils className="w-5 h-5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-headline-sm text-[21px] text-surface font-semibold tracking-tight leading-tight">
+                {RESTAURANT_INFO.name}
+              </span>
+              <span className="font-label-md text-xs text-primary-fixed-dim/90">
+                A Nossa Casa • Tatuapé • {RESTAURANT_INFO.established}
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop Nav Links */}
+          <nav className="flex items-center gap-1 lg:gap-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-3.5 py-2 rounded-lg font-label-lg text-sm transition-all whitespace-nowrap ${
+                  link.isActive
+                    ? 'text-tertiary-fixed font-bold bg-primary/40 shadow-sm border border-tertiary-fixed/30'
+                    : 'text-primary-fixed-dim hover:text-surface hover:bg-surface/10'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Actions zone */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* Status indicator */}
+            <div className="hidden lg:flex items-center gap-2 bg-primary/50 px-3 py-1.5 rounded-full border border-primary-fixed/20 text-xs text-surface-container-low">
+              <Clock className="w-3.5 h-3.5 text-tertiary-fixed" />
+              <span>{RESTAURANT_INFO.statusText}</span>
+            </div>
+
+            {/* "Ver Cardápio" CTA */}
+            <Link
+              href="/categorias"
+              className="inline-flex items-center gap-2 bg-tertiary-fixed text-on-tertiary-fixed px-4 py-2 rounded-lg font-label-lg text-sm font-bold shadow-md hover:bg-tertiary-fixed-dim active:scale-95 transition-all"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>Ver Cardápio</span>
+            </Link>
+
+            {/* WhatsApp reservations */}
+            <a
+              href={RESTAURANT_INFO.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-2 bg-secondary text-on-secondary px-3.5 py-2 rounded-lg font-label-lg text-sm font-bold shadow hover:bg-secondary/90 active:scale-95 transition-all"
+              title="Reservar mesa via WhatsApp"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span className="hidden xl:inline">Reservar</span>
+            </a>
+
+            {/* Avatar thumbnail */}
+            <div className="relative w-9 h-9 rounded-full overflow-hidden border border-tertiary-fixed/50 shrink-0">
+              <Image
+                src={RESTAURANT_INFO.avatarImage}
+                alt="Perfil Taberna Portucale"
+                width={36}
+                height={36}
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
           </div>
         </div>
       </div>
