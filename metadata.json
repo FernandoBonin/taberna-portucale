@@ -1,0 +1,6 @@
+{
+  "name": "Taberna Portucale",
+  "description": "Cardápio digital e experiência gastronômica da Taberna Portucale no Tatuapé com autêntico bacalhau norueguês, vinhos e doces conventuais.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
